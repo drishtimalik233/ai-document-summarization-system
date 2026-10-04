@@ -10,7 +10,7 @@ import hashlib
 import streamlit as st
 
 from pdf_extractor import PDFExtractionError, extract_text_from_pdf
-from summarizer import MODEL_NAME, check_ollama_status, generate_summary
+from summarizer import ENGINE_VERSION, MODEL_NAME, check_ollama_status, generate_summary
 
 st.set_page_config(
     page_title="AI Document Summarization System",
@@ -29,6 +29,7 @@ with st.sidebar:
 **Frontend:** Streamlit
 """
     )
+    st.caption(f"Engine version: {ENGINE_VERSION}")
     st.divider()
     running, model_ok, status_msg = check_ollama_status()
     if running and model_ok:
@@ -87,8 +88,12 @@ with st.expander("📄 View Extracted Document Text"):
     st.text_area("Extracted text", text, height=400, label_visibility="collapsed")
 
 if st.button("🚀 Generate Summary", type="primary"):
+    status_box = st.empty()
     with st.spinner("🤖 Generating AI summary..."):
-        st.session_state["result"] = generate_summary(uploaded_file.name, total_pages, text)
+        st.session_state["result"] = generate_summary(
+            uploaded_file.name, total_pages, text, progress=lambda msg: status_box.info(msg)
+        )
+    status_box.empty()
 
 result = st.session_state.get("result")
 if result is not None:
@@ -98,6 +103,8 @@ if result is not None:
     elif result.warning:
         st.warning(f"⚠️ {result.warning}")
 
+    if result.info:
+        st.caption(f"ℹ️ {result.info}")
     st.subheader("📋 FINAL DOCUMENT SUMMARY")
     st.markdown(result.summary)
 

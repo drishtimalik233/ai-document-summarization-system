@@ -6,6 +6,19 @@ and generates a structured summary using the **llama3.2:1b** model served by **O
 No paid API, subscription or internet connection is needed for AI inference.
 If the AI is unavailable, a document-based fallback summary is generated automatically.
 
+## Quick Start (Windows)
+1. Install **Python** from https://www.python.org/downloads/ (tick *Add python.exe to PATH*).
+2. Install **Ollama** from https://ollama.com/download.
+3. Download this project (**Code -> Download ZIP** on GitHub) and extract it.
+4. Open the extracted `Document Summarization System` folder and **double-click `run.bat`**.
+
+On the first run, `run.bat` creates the virtual environment, installs the packages and downloads
+the `llama3.2:1b` model (about 1.3 GB), so it needs an internet connection and some patience.
+After that it starts the app in your browser at http://localhost:8501 within seconds.
+If Windows SmartScreen warns about the file, choose **More info -> Run anyway**.
+
+Prefer the command line? See *Installation* and *Running the Project* below.
+
 ## 2. Features
 - Upload any text-based PDF; page count detection
 - Page-by-page text extraction with page boundaries preserved
@@ -58,6 +71,7 @@ Document Summarization System/
 ├── pdf_extractor.py    # pypdf text extraction
 ├── requirements.txt
 ├── README.md
+├── run.bat             # one-click launcher for Windows
 ├── Dockerfile          # optional, for deployment
 ├── .gitignore
 ├── .streamlit/config.toml
@@ -117,3 +131,14 @@ fallback summary unless `OLLAMA_HOST` (in app Secrets/env) points to a publicly 
 | Timeout | Close other heavy apps, try a smaller PDF, retry (first call loads the model) |
 | Scanned PDF message | The PDF is an image; OCR is required |
 | Activate.ps1 blocked | `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` |
+
+## Screenshots
+Add your own screenshots to a `screenshots/` folder using these file names.
+
+| Home page | Exam paper summary |
+|---|---|
+| ![Home](screenshots/home.png) | ![Exam summary](screenshots/exam_summary.png) |
+
+| Research paper summary | Fallback when AI is unavailable |
+|---|---|
+| ![Research summary](screenshots/research_summary.png) | ![Fallback](screenshots/fallback.png) |
